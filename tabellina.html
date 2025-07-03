@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generatore Tabellina</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .input-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #555;
+        }
+        input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+        input[type="number"]:focus {
+            border-color: #4CAF50;
+            outline: none;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .risultato {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+            border-left: 4px solid #4CAF50;
+        }
+        .errore {
+            color: #d32f2f;
+            background-color: #ffebee;
+            border-left-color: #d32f2f;
+        }
+        .numeri {
+            font-family: 'Courier New', monospace;
+            font-size: 18px;
+            line-height: 1.5;
+            word-break: break-all;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔢 Generatore Tabellina</h1>
+        
+        <div class="input-group">
+            <label for="numeroTabellina">Numero della tabellina:</label>
+            <input type="number" id="numeroTabellina" placeholder="Es: 5" min="0">
+        </div>
+        
+        <div class="input-group">
+            <label for="numeroFine">Fino a quale numero:</label>
+            <input type="number" id="numeroFine" placeholder="Es: 10" min="0">
+        </div>
+        
+        <button onclick="generaTabellina()">Genera Tabellina</button>
+        
+        <div id="risultato" style="display: none;"></div>
+    </div>
+
+    <script>
+        function generaTabellina() {
+            // Ottieni i valori dagli input
+            const numeroTabellina = parseInt(document.getElementById('numeroTabellina').value);
+            const numeroFine = parseInt(document.getElementById('numeroFine').value);
+            const risultatoDiv = document.getElementById('risultato');
+            
+            // Verifica che i numeri siano validi
+            if (isNaN(numeroTabellina) || isNaN(numeroFine)) {
+                mostraErrore('Inserisci numeri validi in entrambi i campi!');
+                return;
+            }
+            
+            if (numeroFine < 0) {
+                mostraErrore('Il numero finale deve essere positivo!');
+                return;
+            }
+            
+            if (numeroFine > 100) {
+                mostraErrore('Il numero finale non può essere maggiore di 100!');
+                return;
+            }
+            
+            // Genera la tabellina
+            const risultati = [];
+            for (let i = 0; i <= numeroFine; i++) {
+                risultati.push(numeroTabellina * i);
+            }
+            
+            // Mostra il risultato
+            risultatoDiv.className = 'risultato';
+            risultatoDiv.innerHTML = `
+                <h3>Tabellina del ${numeroTabellina} fino a ${numeroFine}:</h3>
+                <div class="numeri">${risultati.join(', ')}</div>
+            `;
+            risultatoDiv.style.display = 'block';
+        }
+        
+        function mostraErrore(messaggio) {
+            const risultatoDiv = document.getElementById('risultato');
+            risultatoDiv.className = 'risultato errore';
+            risultatoDiv.innerHTML = `<strong>Errore:</strong> ${messaggio}`;
+            risultatoDiv.style.display = 'block';
+        }
+        
+        // Permetti di premere Enter per generare la tabellina
+        document.addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                generaTabellina();
+            }
+        });
+    </script>
+</body>
+</html>
